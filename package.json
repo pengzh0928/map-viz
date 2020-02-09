@@ -19,7 +19,8 @@
     "echarts": "^4.6.0"
   },
   "dependencies": {
-    "echarts": "^4.6.0"
+    "echarts": "^4.6.0",
+    "echarts-for-react": "^2.0.15-beta.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

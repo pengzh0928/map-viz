@@ -10,8 +10,9 @@
  */
 
 import React from 'react';
-import { ReactEcharts } from './reactEcharts';
+import ReactEcharts from 'echarts-for-react';
 import provinceName from '../../data/map/provinces';
+import echarts from 'echarts';
 
 type Props = {
   data: any;
@@ -27,6 +28,8 @@ const LINE_WIDTH = 5;
 const SYMOBL_SIZE = 10;
 
 export class VirusChart extends React.Component<Props, Readonly<State>> {
+  getConfirmedSuspectChart :any
+  curedDeadChart : any
 
   static defaultProps = {
     data: {
@@ -299,6 +302,14 @@ export class VirusChart extends React.Component<Props, Readonly<State>> {
     };
   }
 
+  componentDidMount() {
+    let confirmedSuspectChart = this.getConfirmedSuspectChart.getEchartsInstance(); 
+    let curedDeadChart = this.curedDeadChart.getEchartsInstance();
+    confirmedSuspectChart.group = 'virusChart';
+    curedDeadChart.group = 'virusChart';
+    echarts.connect('virusChart');
+  }
+
   public render() {
     const { data, area, path } = this.props;
     const orderedProvincesData = this.getOrderedTimeData(data.provincesSeries);
@@ -325,23 +336,27 @@ export class VirusChart extends React.Component<Props, Readonly<State>> {
         </div>
         <div style={{ width: '100%', height: '50%' }}>
           <ReactEcharts
-            chartOptions={this.getConfirmedSuspectChartOptions(
+            ref={(e) => { this.getConfirmedSuspectChart = e; }}
+            option={this.getConfirmedSuspectChartOptions(
               orderedProvincesData,
               orderedCountryData,
               area,
               path
             )}
+            style={{ width: '100%', height: '100%' }}
           />
         </div>
 
         <div style={{ width: '100%', height: '50%' }}>
           <ReactEcharts
-            chartOptions={this.getCuredDeadChartOptions(
+            ref={(e) => { this.curedDeadChart = e; }}
+            option={this.getCuredDeadChartOptions(
               orderedProvincesData,
               orderedCountryData,
               area,
               path
             )}
+            style={{ width: '100%', height: '100%' }}
           />
         </div>
       </div>
